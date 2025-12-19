@@ -1,0 +1,262 @@
+1️⃣ Health Packages (Like Tata 1mg / Practo Style)
+
+On the Health Packages page, packages must be structured similar to popular Indian lab platforms (e.g., Tata 1mg).
+
+Packages must be clearly categorized into:
+
+Men
+
+Women
+
+Young / General
+
+Senior Citizen
+
+(Optional: Diabetes, Heart, Full Body)
+
+Each package card must display only relevant and clean information:
+
+Package Image
+
+Package Name
+
+Category Tag
+
+Total number of tests included
+
+Report delivery time (e.g., 24–48 hours)
+
+Original Price
+
+Discounted Price
+
+Discount Percentage (e.g., 50% OFF)
+
+⚠️ The discount value must be dynamic, fully controlled from the Admin panel, so the admin can change offers anytime.
+
+Each package card must include:
+
+View Details
+
+Add to Cart
+
+Book Now
+
+No random images, unnecessary buttons, or unrelated UI elements should appear.
+
+When the user clicks View Details, open a modal or page showing all tests included in the package, grouped properly (e.g., CBC, LFT, Thyroid, Lipid, etc.), exactly like professional lab apps.
+
+2️⃣ Complete Cart & Booking Flow
+
+Implement a Cart System with the following behavior:
+
+Users can add individual tests and/or packages to cart
+
+Cart supports multiple items
+
+Real-time price calculation including discounts
+
+Clear summary before payment
+
+When user clicks Proceed to Payment, redirect to payment flow.
+
+🔐 Authentication Rule (Very Important)
+
+Users must NOT be allowed to:
+
+Add to cart
+
+Book tests
+
+Proceed to payment
+
+View reports
+without login
+
+If user is not logged in, redirect to Login page
+
+After successful login, resume the same booking/cart flow automatically
+
+3️⃣ Data Security & Access Control
+
+Ensure strict data security:
+
+Booking data, cart data, reports must NOT be accessible without login
+
+Users can see only their own bookings and reports
+
+Admin can see all bookings, payments, reports
+
+No data should be accessible via public or direct routes
+
+No report or booking should appear without authentication
+
+4️⃣ Home Page Improvements
+
+On the Home Page, ensure all major sections are clearly visible and functional:
+
+Featured Health Packages
+
+Popular Lab Tests
+
+Current Offers / Discounts
+
+Easy navigation to Book Test / Packages
+
+If any section is currently hidden, broken, or not loading properly, fix the UI so everything is clean, visible, and user-friendly.
+
+5️⃣ Location-Based Sample Collection (40 KM Rule)
+
+Implement location-based sample collection support:
+
+Allow users to select or share live location
+
+Calculate distance between lab location and user location
+
+If distance exceeds 40 km, clearly restrict or inform user
+
+During booking, clearly show:
+
+Sample collection address
+
+Selected slot
+
+Distance from lab
+
+6️⃣ Admin Panel Enhancements
+
+Admin must be able to:
+
+Create / Edit / Delete health packages
+
+Upload package images
+
+Set prices and discount percentages
+
+Add/remove tests inside packages
+
+Activate / Deactivate packages
+
+View all bookings, users, and payment status
+
+All admin actions must reflect immediately on user side.
+
+7️⃣ ALL INDIA LAB TESTS – MASTER DIRECTORY (MOST IMPORTANT)
+
+Now implement a complete India-standard Lab Test Directory, covering all commonly used pathology tests, especially blood tests, exactly as used in real diagnostic labs.
+
+Organize tests into categories:
+
+Hematology
+
+Biochemistry
+
+Liver Profile (LFT)
+
+Kidney Profile (KFT)
+
+Lipid Profile
+
+Diabetes Tests
+
+Thyroid & Hormones
+
+Vitamins & Minerals
+
+Serology & Immunology
+
+Infection Panels
+
+Cardiac Markers
+
+Special Tests
+
+Each test must be:
+
+Selectable individually
+
+Usable inside packages
+
+8️⃣ Mandatory Report Structure for EVERY Test
+
+For each individual lab test, store and display these medical-standard fields:
+
+Test Name
+
+Test Code (standard lab code)
+
+Sample Type (Blood / Serum / Plasma / Whole Blood)
+
+Fasting Requirement (Yes / No / Hours)
+
+Method Used (e.g., CLIA, ELISA, Spectrophotometry)
+
+Units (mg/dL, g/dL, IU/L, %, cells/µL, etc.)
+
+Reference Range (Male / Female / Age-based where applicable)
+
+Critical Range (if applicable)
+
+Result Field (numeric / text)
+
+Interpretation / Remarks
+
+Report Status (Normal / High / Low / Critical)
+
+The system must automatically determine High / Low / Normal based on reference ranges.
+
+9️⃣ Complete Blood Test Coverage (Indian Standard)
+
+Include full coverage such as:
+
+Hematology
+
+CBC (Hemoglobin, RBC, WBC, Platelets)
+
+HCT / PCV
+
+MCV, MCH, MCHC
+
+RDW
+
+Differential Count
+
+ESR
+
+Peripheral Smear
+
+Blood Group & Rh
+
+Biochemistry
+
+Blood Sugar (Fasting, PP, Random)
+
+HbA1c
+
+Urea
+
+Creatinine
+
+Uric Acid
+
+Electrolytes
+
+Calcium, Phosphorus, Magnesium
+
+LFT, KFT, Lipid, Thyroid, Hormones, Vitamins, Infection Panels
+
+(Include all commonly used Indian lab tests like Vitamin D, B12, Ferritin, CRP, Dengue, HIV, HBsAg, etc.)
+
+10️⃣ Overall Expectation
+
+This system must behave like a real Indian pathology lab software, not a demo.
+
+Clean & professional UI
+
+Mobile-friendly
+
+Secure authentication
+
+Medical-standard reports
+
+Scalable for future features (PDF reports, doctor remarks, report history, trend comparison)

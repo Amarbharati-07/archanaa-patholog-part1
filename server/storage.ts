@@ -368,7 +368,7 @@ export class DatabaseStorage implements IStorage {
         eq(otps.contact, contact),
         eq(otps.otp, otpCode),
         eq(otps.purpose, purpose),
-        gte(otps.expiresAt, new Date())
+        gte(otps.expiresAt, sql`now()`)
       )
     );
     return otp || undefined;
@@ -391,7 +391,7 @@ export class DatabaseStorage implements IStorage {
       and(
         eq(otps.contact, contact),
         eq(otps.purpose, purpose),
-        gte(otps.expiresAt, new Date())
+        gte(otps.expiresAt, sql`now()`)
       )
     );
     return otp || undefined;

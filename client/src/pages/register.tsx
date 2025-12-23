@@ -385,7 +385,7 @@ export default function Register() {
                   Didn't receive the code?{" "}
                   <Button
                     type="button"
-                    variant="link"
+                    variant="ghost"
                     className="p-0 h-auto"
                     onClick={handleResend}
                     disabled={resendMutation.isPending}

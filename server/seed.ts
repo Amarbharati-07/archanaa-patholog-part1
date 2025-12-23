@@ -1515,8 +1515,209 @@ const seedPackages = [
   },
 ];
 
+async function ensureTablesExist() {
+  try {
+    const tableQueries = [
+      `CREATE TABLE IF NOT EXISTS patients (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        patient_id VARCHAR(50) UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        email TEXT,
+        phone TEXT NOT NULL,
+        dob TIMESTAMP,
+        gender VARCHAR(20),
+        address TEXT,
+        password TEXT,
+        firebase_uid TEXT,
+        email_verified BOOLEAN DEFAULT FALSE,
+        notes TEXT,
+        profile_photo TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS tests (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        code VARCHAR(50) UNIQUE NOT NULL,
+        category VARCHAR(100) NOT NULL,
+        price DECIMAL(10,2) NOT NULL,
+        duration VARCHAR(50) NOT NULL,
+        description TEXT,
+        parameters JSONB NOT NULL,
+        image_url TEXT
+      )`,
+      `CREATE TABLE IF NOT EXISTS health_packages (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        category VARCHAR(50) NOT NULL,
+        description TEXT,
+        test_ids JSONB NOT NULL,
+        report_time VARCHAR(50) NOT NULL,
+        original_price DECIMAL(10,2) NOT NULL,
+        discount_percentage INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        image_url TEXT,
+        sort_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS bookings (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        patient_id VARCHAR(36) REFERENCES patients(id),
+        guest_name TEXT,
+        phone TEXT NOT NULL,
+        email TEXT,
+        test_ids JSONB NOT NULL,
+        health_package_id VARCHAR(36) REFERENCES health_packages(id),
+        type VARCHAR(20) NOT NULL,
+        slot TIMESTAMP NOT NULL,
+        status VARCHAR(30) DEFAULT 'pending',
+        test_report_status JSONB,
+        payment_method VARCHAR(50),
+        payment_status VARCHAR(50) DEFAULT 'pending',
+        transaction_id TEXT,
+        razorpay_order_id TEXT,
+        razorpay_payment_id TEXT,
+        payment_screenshot TEXT,
+        amount_paid DECIMAL(10,2),
+        discount_amount DECIMAL(10,2),
+        payment_date TIMESTAMP,
+        payment_verified_at TIMESTAMP,
+        payment_verified_by VARCHAR(36),
+        user_latitude DECIMAL(10,7),
+        user_longitude DECIMAL(10,7),
+        distance_from_lab DECIMAL(10,2),
+        collection_address TEXT,
+        prescription_path TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS reports (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        patient_id VARCHAR(36) NOT NULL REFERENCES patients(id),
+        result_id VARCHAR(36) NOT NULL,
+        booking_id VARCHAR(36) REFERENCES bookings(id),
+        pdf_path TEXT,
+        secure_download_token TEXT UNIQUE NOT NULL,
+        generated_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS prescriptions (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        patient_id VARCHAR(36) NOT NULL REFERENCES patients(id),
+        booking_id VARCHAR(36) REFERENCES bookings(id),
+        file_name TEXT NOT NULL,
+        file_path TEXT NOT NULL,
+        file_type VARCHAR(50) NOT NULL,
+        file_size INTEGER,
+        notes TEXT,
+        uploaded_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS admins (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        name TEXT NOT NULL,
+        role VARCHAR(30) DEFAULT 'technician',
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS otps (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        contact TEXT NOT NULL,
+        otp VARCHAR(6) NOT NULL,
+        purpose VARCHAR(30) NOT NULL,
+        attempts INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW(),
+        expires_at TIMESTAMP NOT NULL
+      )`,
+      `CREATE TABLE IF NOT EXISTS reviews (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        location TEXT NOT NULL,
+        rating INTEGER NOT NULL,
+        review TEXT NOT NULL,
+        is_approved BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS advertisements (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        title TEXT NOT NULL,
+        subtitle TEXT NOT NULL,
+        description TEXT NOT NULL,
+        gradient VARCHAR(100) NOT NULL,
+        icon VARCHAR(50) NOT NULL,
+        image_url TEXT,
+        cta_text TEXT NOT NULL,
+        cta_link TEXT NOT NULL,
+        is_active BOOLEAN DEFAULT TRUE,
+        sort_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS lab_settings (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        lab_name TEXT NOT NULL,
+        lab_latitude DECIMAL(10,7) NOT NULL,
+        lab_longitude DECIMAL(10,7) NOT NULL,
+        max_collection_distance INTEGER DEFAULT 40,
+        address TEXT,
+        phone TEXT,
+        email TEXT,
+        updated_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS walkin_collections (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        patient_id VARCHAR(36) NOT NULL REFERENCES patients(id),
+        doctor_name TEXT,
+        doctor_clinic TEXT,
+        test_ids JSONB NOT NULL,
+        test_report_status JSONB,
+        status VARCHAR(30) DEFAULT 'pending',
+        collected_at TIMESTAMP DEFAULT NOW(),
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS notifications (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        type VARCHAR(50) NOT NULL,
+        title TEXT NOT NULL,
+        message TEXT NOT NULL,
+        recipient_type VARCHAR(20) NOT NULL,
+        patient_id VARCHAR(36) REFERENCES patients(id),
+        admin_id VARCHAR(36) REFERENCES admins(id),
+        booking_id VARCHAR(36) REFERENCES bookings(id),
+        report_id VARCHAR(36) REFERENCES reports(id),
+        metadata JSONB,
+        is_read BOOLEAN DEFAULT FALSE,
+        read_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`,
+      `CREATE TABLE IF NOT EXISTS results (
+        id VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+        patient_id VARCHAR(36) NOT NULL REFERENCES patients(id),
+        test_id VARCHAR(36) NOT NULL REFERENCES tests(id),
+        parameter_results JSONB NOT NULL,
+        technician TEXT NOT NULL,
+        referred_by TEXT,
+        collected_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )`
+    ];
+
+    for (const query of tableQueries) {
+      try {
+        await db.execute(db.raw(query));
+      } catch (err: any) {
+        if (!err.message?.includes('already exists')) {
+          console.log(`Note: Table operation: ${err.message?.substring(0, 50)}`);
+        }
+      }
+    }
+
+    console.log('✅ Database tables ensured');
+  } catch (err) {
+    console.error('Error ensuring tables exist:', err);
+  }
+}
+
 export async function seedDatabase() {
   try {
+    await ensureTablesExist();
     console.log("Seeding database...");
 
     // Check if tests exist

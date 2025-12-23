@@ -1,0 +1,145 @@
+You are a senior full-stack engineer and DevOps expert.
+
+I have an existing repository:
+https://github.com/Amarbharati-07/archanaa-patholog-part1
+
+The project is a FULL STACK Pathology Lab Management System:
+Frontend: React + Vite + TypeScript
+Backend: Node.js + Express + TypeScript
+Database: PostgreSQL (Neon)
+Hosting: Render
+Domain: https://archanapathalogy.in
+
+====================
+CURRENT CRITICAL ISSUES
+====================
+
+1. User registration gets stuck on "Creating Account..." forever.
+2. OTP / verification emails are NOT being delivered in production.
+3. Backend APIs sometimes return 401 / 403 / 500 / 502 errors.
+4. Service Worker & PWA exist but must not block auth or API requests.
+5. Domain works, SSL works, but production behavior differs from local.
+6. Database inserts happen but API response is missing.
+7. Email service works locally but fails on Render.
+8. Admin & User flows are unstable.
+9. Cross-env / environment mismatch issues exist.
+10. Render deployment crashes due to missing dependencies and port binding issues.
+
+====================
+YOUR TASK (MANDATORY)
+====================
+
+1. **Analyze the entire repository deeply**:
+   - frontend
+   - backend
+   - routes
+   - controllers
+   - database schema
+   - service worker
+   - build scripts
+   - Render compatibility
+
+2. **Fix the AUTH SYSTEM completely**:
+   - Registration
+   - Login
+   - OTP verification
+   - Email verification
+   - JWT handling
+   - Proper HTTP responses (no hanging requests)
+
+3. **Fix BACKEND APIs**:
+   - Every API must ALWAYS return a response
+   - Proper try/catch everywhere
+   - Correct status codes (200, 201, 400, 401, 500)
+   - No silent failures
+
+4. **Fix EMAIL DELIVERY (PRODUCTION READY)**:
+   - Use Nodemailer with Gmail SMTP
+   - Read credentials from environment variables
+   - Handle email failures gracefully
+   - Ensure OTP email always sends
+   - Add logging for email success/failure
+
+5. **Fix ENVIRONMENT CONFIGURATION**:
+   - Remove `cross-env` dependency
+   - Use pure Node.js `process.env`
+   - Ensure Render-compatible startup
+   - Correct PORT binding for Render
+   - Provide `.env.example`
+
+6. **Fix DATABASE FLOW**:
+   - Ensure tables are used correctly
+   - Ensure OTP expiry works
+   - Ensure duplicate users are handled
+   - Ensure clean relations between users, bookings, reports, prescriptions
+
+7. **Fix FRONTEND UX**:
+   - Loading state must STOP on error/success
+   - Show proper error messages
+   - Redirect properly after success
+   - OTP screen must work reliably
+
+8. **Fix SERVICE WORKER / PWA**:
+   - Ensure it does NOT cache API calls
+   - Exclude `/api/*` routes from caching
+   - Prevent auth issues due to SW
+
+9. **ADMIN PANEL REQUIREMENTS**:
+   - Admin login
+   - View patients
+   - View bookings
+   - Upload reports
+   - Manage prescriptions
+   - Secure admin routes
+
+10. **USER PANEL REQUIREMENTS**:
+    - Register & login
+    - OTP verify
+    - Book tests
+    - View reports
+    - View prescriptions
+    - Profile management
+
+====================
+DELIVERABLES REQUIRED
+====================
+
+You MUST generate:
+
+1. Fully corrected backend code (routes + controllers)
+2. Fully corrected frontend auth flow
+3. Correct email service code
+4. Correct service worker code
+5. Correct Render deployment config
+6. SQL schema if needed
+7. Final `.env.example`
+8. Clear explanation of ALL fixes
+9. Production-ready final solution
+10. ZERO placeholders, ZERO TODOs
+
+====================
+IMPORTANT RULES
+====================
+
+- Assume this is a REAL production medical website.
+- Code must be secure and stable.
+- No infinite loading states.
+- No silent failures.
+- Everything must work on Render with custom domain.
+- Explain fixes clearly but concisely.
+
+====================
+FINAL GOAL
+====================
+
+After applying your solution:
+- Registration works
+- OTP email arrives instantly
+- Login works
+- Admin dashboard works
+- User dashboard works
+- No console errors
+- No hanging requests
+- Production behaves exactly like local
+
+Start by analyzing the repository and then provide the COMPLETE FIXED SOLUTION.

@@ -1,0 +1,65 @@
+You are a senior full-stack engineer and DevOps expert.
+
+I have a full-stack MERN / Node.js + React pathology lab web application
+hosted on Render and connected to a custom domain:
+https://archanapathalogy.in
+
+Current issues in production:
+
+1) Email OTP is NOT being delivered when users register on the live domain,
+   but it works inconsistently or not at all.
+2) The Register button takes too long to respond (very slow UX).
+3) Login API returns 401 Unauthorized even for valid users.
+4) API requests sometimes fail with 502 / 403 / 500 errors.
+5) Service Worker is registered but may be interfering with API calls.
+6) Domain + HTTPS is working, but production behavior is different from local.
+7) Email service (SMTP / Nodemailer / Gmail / Outlook / SendGrid) is likely misconfigured.
+8) Environment variables on Render may be missing or incorrect.
+9) Database (PostgreSQL / MongoDB) user verification and OTP logic may be flawed.
+
+I want you to:
+
+A) Fully analyze the backend authentication flow:
+   - Register
+   - Email OTP generation
+   - Email sending
+   - OTP verification
+   - Login
+   - JWT / session handling
+
+B) Identify why emails are not sent in production and fix:
+   - SMTP configuration
+   - TLS / secure flags
+   - Environment variables
+   - Email provider limits
+
+C) Optimize the Register API so the button responds fast:
+   - Avoid blocking email send
+   - Use async / background email sending
+   - Improve API response timing
+
+D) Fix all 401 / 403 / 502 errors properly with correct status codes.
+
+E) Provide:
+   1) Correct and secure Nodemailer (or SendGrid) configuration
+   2) Optimized Register API code
+   3) Optimized Login API code
+   4) Correct OTP verification logic
+   5) Proper environment variable list for Render
+   6) Service Worker fix so it does NOT cache API calls
+   7) Production-ready error handling
+   8) Database schema corrections if required
+
+F) Ensure:
+   - Works on custom domain HTTPS
+   - Emails are delivered reliably
+   - Register & login are fast
+   - Production-ready security practices
+
+Give the final solution as:
+- Clean, corrected backend code
+- Clear explanation of each fix
+- Step-by-step deployment checklist for Render
+- Do NOT suggest temporary hacks or unsafe solutions
+
+Treat this as a real medical pathology system used by patients.

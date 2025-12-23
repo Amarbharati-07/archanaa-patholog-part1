@@ -843,28 +843,30 @@ export async function registerRoutes(
         paymentDate: new Date(),
       });
 
-      // Send booking confirmation notifications
-      try {
-        const patient = patientId ? await storage.getPatient(patientId) : null;
-        const tests = await Promise.all(testIds.map((id: string) => storage.getTest(id)));
-        const validTests = tests.filter((t): t is NonNullable<typeof t> => t !== undefined);
-        const totalAmount = validTests.reduce((sum, t) => sum + parseFloat(t.price), 0);
-        
-        await notificationService.createBookingNotifications(
-          booking,
-          patient || null,
-          validTests,
-          undefined,
-          totalAmount
-        );
-      } catch (notifError) {
-        console.error("Error sending booking notifications:", notifError);
-      }
+      // Send booking confirmation notifications (non-blocking, don't fail if this errors)
+      setImmediate(async () => {
+        try {
+          const patient = patientId ? await storage.getPatient(patientId) : null;
+          const tests = await Promise.all(testIds.map((id: string) => storage.getTest(id)));
+          const validTests = tests.filter((t): t is NonNullable<typeof t> => t !== undefined);
+          const totalAmount = validTests.reduce((sum, t) => sum + parseFloat(t.price), 0);
+          
+          await notificationService.createBookingNotifications(
+            booking,
+            patient || null,
+            validTests,
+            undefined,
+            totalAmount
+          );
+        } catch (notifError) {
+          console.error("Error sending booking notifications (non-blocking):", notifError);
+        }
+      });
 
       res.json(booking);
     } catch (error) {
       console.error("Error creating booking:", error);
-      res.status(500).json({ message: "Failed to create booking" });
+      res.status(500).json({ message: "Failed to create booking", error: (error as any)?.message || "Unknown error" });
     }
   });
 

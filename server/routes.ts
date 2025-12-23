@@ -439,7 +439,10 @@ export async function registerRoutes(
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
       });
 
-      await sendOtpEmail(email, otp, "email_verification");
+      // Send email asynchronously (non-blocking) - don't await
+      sendOtpEmail(email, otp, "email_verification").catch((err) => {
+        console.error("Failed to send verification email:", err);
+      });
       
       // Don't return password in response
       const { password: _, ...patientData } = patient as any;
@@ -480,7 +483,10 @@ export async function registerRoutes(
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
       });
 
-      await sendOtpEmail(email, otp, "email_verification");
+      // Send email asynchronously (non-blocking) - don't await
+      sendOtpEmail(email, otp, "email_verification").catch((err) => {
+        console.error("Failed to send verification email:", err);
+      });
 
       res.json({ message: "Verification OTP sent successfully" });
     } catch (error) {
@@ -637,8 +643,10 @@ export async function registerRoutes(
         expiresAt,
       });
 
-      // Send OTP via Email
-      await sendOtpEmail(email, otp, "password_reset");
+      // Send OTP via Email (asynchronously - non-blocking)
+      sendOtpEmail(email, otp, "password_reset").catch((err) => {
+        console.error("Failed to send password reset email:", err);
+      });
 
       res.json({ message: "If this email is registered, you will receive a password reset OTP" });
     } catch (error) {

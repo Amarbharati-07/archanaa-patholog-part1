@@ -892,12 +892,7 @@ export async function registerRoutes(
         notes: notes || null,
       });
 
-      // If bookingId is provided, also update the booking with the prescription path
-      if (bookingId) {
-        await storage.updateBooking(bookingId, {
-          prescriptionPath: `/uploads/prescriptions/${req.file.filename}`,
-        });
-      }
+      // Note: bookingId is stored directly in the prescription record for better data organization
 
       res.json(prescription);
     } catch (error) {
@@ -906,10 +901,23 @@ export async function registerRoutes(
     }
   });
 
-  // Get patient's prescriptions
+  // Get prescriptions (role-based access control)
   app.get("/api/prescriptions", authenticateToken, async (req, res) => {
     try {
       const user = (req as any).user;
+      const patientId = (req.query.patientId as string) || user.id;
+
+      // If admin, can see all prescriptions or filter by patientId
+      if (user.type === 'admin') {
+        if (patientId) {
+          const prescriptions = await storage.getPrescriptionsByPatient(patientId);
+          return res.json(prescriptions);
+        }
+        // For admin, if no patientId specified, return empty (admins should use other endpoints)
+        return res.json([]);
+      }
+
+      // Patients can only see their own prescriptions
       if (user.type !== 'patient') {
         return res.status(403).json({ message: "Access denied" });
       }

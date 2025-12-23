@@ -80,7 +80,6 @@ export const bookings = pgTable("bookings", {
   userLongitude: decimal("user_longitude", { precision: 10, scale: 7 }),
   distanceFromLab: decimal("distance_from_lab", { precision: 10, scale: 2 }),
   collectionAddress: text("collection_address"),
-  prescriptionPath: text("prescription_path"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

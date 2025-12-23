@@ -1,13 +1,32 @@
 import nodemailer from "nodemailer";
 import type { Booking, Patient, Test, HealthPackage } from "@shared/schema";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Configure email service - supports both Brevo (Sendinblue) and Gmail
+const getTransporter = () => {
+  // Use Brevo if credentials available, otherwise Gmail
+  if (process.env.BREVO_SMTP_HOST && process.env.BREVO_SMTP_USER && process.env.BREVO_SMTP_PASS) {
+    return nodemailer.createTransport({
+      host: process.env.BREVO_SMTP_HOST,
+      port: parseInt(process.env.BREVO_SMTP_PORT || "587"),
+      secure: process.env.BREVO_SMTP_SECURE === "true", // true for 465, false for other ports
+      auth: {
+        user: process.env.BREVO_SMTP_USER,
+        pass: process.env.BREVO_SMTP_PASS,
+      },
+    });
+  }
+
+  // Fallback to Gmail
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+};
+
+const transporter = getTransporter();
 
 const LAB_NAME = "Archana Pathology Lab";
 const LAB_EMAIL = "info@archanapathology.com";

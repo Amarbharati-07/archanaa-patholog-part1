@@ -261,7 +261,7 @@ export async function registerRoutes(
         notes: null,
       });
 
-      // Generate and send OTP
+      // Generate OTP
       const otp = generateOTP();
       await storage.createOtp({
         contact: phone,
@@ -270,9 +270,16 @@ export async function registerRoutes(
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
       });
 
-      console.log(`OTP for ${phone}: ${otp}`);
+      // Send OTP email asynchronously (non-blocking)
+      if (email) {
+        sendOtpEmail(email, otp, "register").catch((err) => {
+          console.error("Failed to send OTP email:", err);
+        });
+      } else {
+        console.log(`[DEV] OTP for ${phone}: ${otp}`);
+      }
 
-      res.json({ message: "Registration successful. OTP sent.", patientId: patient.patientId, debug_otp: otp });
+      res.json({ message: "Registration successful. OTP sent to your email.", patientId: patient.patientId });
     } catch (error) {
       console.error("Error registering:", error);
       res.status(500).json({ message: "Registration failed" });

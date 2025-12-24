@@ -97,7 +97,8 @@
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.24.2",
-    "zod-validation-error": "^3.4.0"
+    "zod-validation-error": "^3.4.0",
+    "drizzle-kit": "^0.31.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -112,8 +113,7 @@
     "@types/passport-local": "^1.0.38",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
-    "@types/ws": "^8.18.1",
-    "drizzle-kit": "^0.31.8"
+    "@types/ws": "^8.18.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"

@@ -378,6 +378,25 @@ export async function registerRoutes(
     }
   });
 
+  // ==================== DEBUG ENDPOINT - GET OTP (TEMPORARY) ====================
+  // Only for testing - shows the most recent OTP sent to an email
+  app.get("/api/auth/debug-otp", async (req, res) => {
+    const email = req.query.email as string;
+    if (!email) {
+      return res.status(400).json({ message: "Email query param required" });
+    }
+    try {
+      const otp = await storage.getOtpByContact(email);
+      if (!otp) {
+        return res.status(404).json({ message: "No OTP found for this email" });
+      }
+      res.json({ otp: otp.otp, expiresAt: otp.expiresAt });
+    } catch (error) {
+      console.error("Debug endpoint error:", error);
+      res.status(500).json({ message: "Failed to retrieve OTP" });
+    }
+  });
+
   // ==================== EMAIL/PASSWORD AUTH ROUTES ====================
 
   // Register with email and password

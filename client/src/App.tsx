@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { CartProvider } from "@/lib/cart-context";
+import { useEffect } from "react";
 
 import Home from "@/pages/home";
 import Tests from "@/pages/tests";
@@ -66,6 +67,19 @@ function Router() {
 }
 
 function App() {
+  // Disable service worker to prevent caching issues in production
+  useEffect(() => {
+    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+          registration.unregister().catch((err) => {
+            console.warn('Failed to unregister service worker:', err);
+          });
+        });
+      });
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

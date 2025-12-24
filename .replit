@@ -37,3 +37,12 @@ externalPort = 80
 deploymentTarget = "autoscale"
 run = ["node", "./dist/index.cjs"]
 build = ["npm", "run", "build"]
+
+[userenv]
+
+[userenv.shared]
+NODE_ENV = "production"
+PORT = "5000"
+BREVO_SMTP_HOST = "smtp-relay.brevo.com"
+BREVO_SMTP_PORT = "587"
+BREVO_SMTP_SECURE = "false"

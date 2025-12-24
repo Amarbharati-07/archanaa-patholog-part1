@@ -270,15 +270,18 @@ export async function registerRoutes(
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
       });
 
-      // Send OTP email asynchronously (non-blocking)
+      // Send OTP email asynchronously (truly non-blocking - fire and forget)
       if (email) {
-        sendOtpEmail(email, otp, "register").catch((err) => {
-          console.error("Failed to send OTP email:", err);
+        setImmediate(() => {
+          sendOtpEmail(email, otp, "register").catch((err) => {
+            console.error("[ASYNC] Failed to send OTP email:", err);
+          });
         });
       } else {
         console.log(`[DEV] OTP for ${phone}: ${otp}`);
       }
 
+      // Return immediately without waiting for email
       res.json({ message: "Registration successful. OTP sent to your email.", patientId: patient.patientId });
     } catch (error) {
       console.error("Error registering:", error);
@@ -458,9 +461,11 @@ export async function registerRoutes(
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
       });
 
-      // Send email asynchronously (non-blocking) - don't await
-      sendOtpEmail(email, otp, "email_verification").catch((err) => {
-        console.error("Failed to send verification email:", err);
+      // Send email asynchronously (fire and forget - truly non-blocking)
+      setImmediate(() => {
+        sendOtpEmail(email, otp, "email_verification").catch((err) => {
+          console.error("[ASYNC] Failed to send verification email:", err);
+        });
       });
       
       // Don't return password in response
@@ -502,9 +507,11 @@ export async function registerRoutes(
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
       });
 
-      // Send email asynchronously (non-blocking) - don't await
-      sendOtpEmail(email, otp, "email_verification").catch((err) => {
-        console.error("Failed to send verification email:", err);
+      // Send email asynchronously (fire and forget - truly non-blocking)
+      setImmediate(() => {
+        sendOtpEmail(email, otp, "email_verification").catch((err) => {
+          console.error("[ASYNC] Failed to send verification email:", err);
+        });
       });
 
       res.json({ message: "Verification OTP sent successfully" });

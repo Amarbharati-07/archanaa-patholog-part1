@@ -86,6 +86,8 @@ function getBaseEmailTemplate(content: string): string {
 }
 
 export async function sendOtpEmail(to: string, otp: string, purpose: string): Promise<boolean> {
+  console.log(`📧 [SENDOTP] Starting email send for ${to} (purpose: ${purpose})`);
+  
   const subject = purpose === "email_verification" 
     ? "Verify Your Email - Archana Pathology Lab"
     : "Password Reset OTP - Archana Pathology Lab";
@@ -130,22 +132,31 @@ export async function sendOtpEmail(to: string, otp: string, purpose: string): Pr
   `;
 
   try {
+    // Check if email credentials are configured
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.log(`[DEV MODE] Email OTP for ${to}: ${otp}`);
+      console.log(`⚠️ [DEV MODE] Email not configured. OTP for ${to}: ${otp}`);
       return true;
     }
 
-    await transporter.sendMail({
+    console.log(`📧 [SENDOTP] Credentials found. Sending via ${process.env.BREVO_SMTP_HOST ? 'Brevo' : 'Gmail'}`);
+    
+    const result = await transporter.sendMail({
       from: `"Archana Pathology Lab" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
     });
-    console.log(`Email sent successfully to ${to}`);
+    
+    console.log(`✅ [SENDOTP] Email sent successfully to ${to}. MessageID: ${result.messageId}`);
     return true;
-  } catch (error) {
-    console.error("Failed to send email:", error);
-    console.log(`[FALLBACK] Email OTP for ${to}: ${otp}`);
+  } catch (error: any) {
+    console.error(`❌ [SENDOTP] Email send FAILED for ${to}:`, {
+      message: error?.message,
+      code: error?.code,
+      command: error?.command,
+    });
+    // Still return true so API responds, but log the OTP as fallback
+    console.log(`🔑 [FALLBACK] OTP for ${to}: ${otp}`);
     return true;
   }
 }

@@ -1,0 +1,83 @@
+Analyze the entire repository https://github.com/Amarbharati-07/archanaa-patholog-part1 and completely remove .env.example from the project.
+
+Migrate all required environment variables into the actual runtime .env configuration only (development + production), and refactor the backend so that it never depends on .env.example in any way.
+
+Ensure there is only one source of truth for environment variables and that all values are read strictly via process.env.
+
+Detect and fix all issues caused by:
+
+Missing environment variables
+
+Duplicate .env files
+
+Hardcoded credentials
+
+Fallback default values
+
+Incorrect dotenv loading order
+
+Fix the email OTP system completely:
+
+OTP emails must be sent reliably in production (Render + custom domain)
+
+Use Brevo SMTP (non-blocking, async)
+
+Registration API must respond instantly even if email sending is slow
+
+Add proper timeout handling and logging
+
+Fix registration and login flow so that:
+
+Registration does not hang or delay
+
+Clear errors are returned (email exists, OTP invalid, etc.)
+
+JWT, session, and cookies work correctly in production
+
+Fix backend startup logic so that:
+
+App fails fast if required env variables are missing
+
+Logs clearly show which env variables are loaded
+
+No silent failures occur
+
+Fix frontend–backend integration:
+
+Frontend uses the correct API base URL
+
+CORS works with custom domain
+
+OTP verification works on live domain
+
+Fix database access:
+
+Ensure correct DATABASE_URL is used everywhere
+
+Packages, tests, bookings, prescriptions load correctly in production
+
+Remove any environment-based conditional bugs
+
+Final result must be a fully functional production-ready pathology lab website where:
+
+.env.example is removed
+
+Only actual .env files are used
+
+OTP emails are delivered on live domain
+
+Registration and login are fast and stable
+
+No 401 / 403 / 500 errors remain
+
+Deliver:
+
+Updated backend code
+
+Clean .env usage (no example file)
+
+Fixed OTP email logic
+
+Clear explanation of what was broken and how it was fixed
+
+Final project ready to deploy on Render without manual fixes

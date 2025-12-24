@@ -131,34 +131,45 @@ export async function sendOtpEmail(to: string, otp: string, purpose: string): Pr
     </html>
   `;
 
-  try {
-    // Check if email credentials are configured
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.log(`⚠️ [DEV MODE] Email not configured. OTP for ${to}: ${otp}`);
-      return true;
-    }
+  // ✅ NON-BLOCKING EMAIL - Fire and forget with timeout
+  // This ensures API responds immediately, email sends async
+  setImmediate(async () => {
+    try {
+      // Check if email credentials are configured
+      if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.log(`⚠️ [DEV MODE] Email not configured. OTP for ${to}: ${otp}`);
+        return;
+      }
 
-    console.log(`📧 [SENDOTP] Credentials found. Sending via ${process.env.BREVO_SMTP_HOST ? 'Brevo' : 'Gmail'}`);
-    
-    const result = await transporter.sendMail({
-      from: `"Archana Pathology Lab" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html,
-    });
-    
-    console.log(`✅ [SENDOTP] Email sent successfully to ${to}. MessageID: ${result.messageId}`);
-    return true;
-  } catch (error: any) {
-    console.error(`❌ [SENDOTP] Email send FAILED for ${to}:`, {
-      message: error?.message,
-      code: error?.code,
-      command: error?.command,
-    });
-    // Still return true so API responds, but log the OTP as fallback
-    console.log(`🔑 [FALLBACK] OTP for ${to}: ${otp}`);
-    return true;
-  }
+      console.log(`📧 [SENDOTP] Credentials found. Sending via ${process.env.BREVO_SMTP_HOST ? 'Brevo' : 'Gmail'}`);
+      
+      // 30-second timeout for email sending
+      const emailPromise = transporter.sendMail({
+        from: `"Archana Pathology Lab" <${process.env.EMAIL_USER}>`,
+        to,
+        subject,
+        html,
+      });
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Email send timeout")), 30000)
+      );
+
+      const result = await Promise.race([emailPromise, timeoutPromise]);
+      console.log(`✅ [SENDOTP] Email sent successfully to ${to}. MessageID: ${(result as any).messageId}`);
+    } catch (error: any) {
+      console.error(`❌ [SENDOTP] Email send FAILED for ${to}:`, {
+        message: error?.message,
+        code: error?.code,
+        command: error?.command,
+      });
+      // Log the OTP as fallback for dev/debugging
+      console.log(`🔑 [FALLBACK] OTP for ${to}: ${otp}`);
+    }
+  });
+
+  // ✅ Always return true immediately - API responds without waiting for email
+  return true;
 }
 
 async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {

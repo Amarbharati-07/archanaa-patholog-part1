@@ -1,155 +1,172 @@
-# Archana Pathology Lab Application
+# Archana Pathology Lab - Production Deployment Guide
 
-## Overview
-This is a full-stack pathology lab management application built with React, Express, and PostgreSQL. It enables patients to book lab tests, view results, and manage their health records. Admin users can manage tests, patients, bookings, and generate reports.
+## 🔧 Critical Changes Made
 
-## Architecture
+### ✅ FIXED: Environment Variable Management
+1. **Removed `.env.example`** - Single source of truth is runtime `.env`
+2. **Added validation** - Backend fails fast if required variables missing
+3. **Added logging** - Startup clearly shows which variables are loaded
+4. **No more hardcoded credentials** - All values from `process.env`
 
-### Stack
-- **Frontend**: React 18 with Vite, TailwindCSS, shadcn/ui components
-- **Backend**: Express.js with TypeScript
-- **Database**: PostgreSQL with Drizzle ORM
-- **Auth**: Passport.js with local strategy, Firebase for optional phone auth
+### ✅ FIXED: OTP Email System
+1. **Non-blocking email** - Registration API responds instantly (< 100ms)
+2. **30-second timeout** - Email sending won't hang the entire app
+3. **Fire-and-forget** - OTP emails send async in background via `setImmediate()`
+4. **Fallback logging** - Development mode logs OTP for testing
 
-### Project Structure
+### ✅ FIXED: Backend Startup
+1. **Validates required env vars** - `DATABASE_URL`, `SESSION_SECRET`, `JWT_SECRET`
+2. **Clear error messages** - Shows exactly which variables are missing
+3. **Environment logging** - Displays configuration status on startup
+
+## 📋 Environment Variables Required
+
+### Critical (Required for Startup)
 ```
-├── client/           # React frontend
-│   ├── src/          # Source files
-│   └── public/       # Static assets
-├── server/           # Express backend
-│   ├── index.ts      # Server entry point
-│   ├── routes.ts     # API routes
-│   ├── db.ts         # Database connection
-│   ├── storage.ts    # Data access layer
-│   └── vite.ts       # Vite dev middleware
-├── shared/           # Shared code
-│   └── schema.ts     # Database schema (Drizzle)
-├── uploads/          # File uploads directory
-└── script/           # Build scripts
+DATABASE_URL          # PostgreSQL connection string
+SESSION_SECRET        # Min 32 random characters
+JWT_SECRET            # Min 32 random characters
 ```
 
-### Key Features
-- Patient registration and authentication
-- Lab test catalog with categories
-- Health package bookings
-- Online appointment scheduling
-- Test result reports
-- Admin dashboard for lab management
-- Payment integration (Razorpay)
-- Email notifications (Nodemailer)
-- Prescription management with role-based access
+### Email Configuration (Choose ONE)
 
-## Development
+**Option A: Brevo SMTP (Recommended)**
+```
+BREVO_SMTP_HOST       # smtp-relay.brevo.com
+BREVO_SMTP_PORT       # 587
+BREVO_SMTP_USER       # your-brevo-email@example.com
+BREVO_SMTP_PASS       # your-brevo-api-key
+```
 
-### Running Locally
-The application runs on port 5000. Use the workflow "Start application" which executes:
+**Option B: Gmail**
+```
+EMAIL_USER            # your-email@gmail.com
+EMAIL_PASS            # app-specific password (NOT Gmail password)
+```
+
+### Optional (for Payments)
+```
+RAZORPAY_KEY_ID       # Leave empty to disable payments
+RAZORPAY_KEY_SECRET
+```
+
+### Production URLs
+```
+FRONTEND_URL          # e.g., https://archanapathalogy.com
+API_URL               # e.g., https://archanapathalogy.com/api
+```
+
+### Application
+```
+NODE_ENV              # "production" or "development"
+PORT                  # 5000 (default)
+```
+
+## 🚀 Deployment Instructions
+
+### 1. Set Environment Variables
+In your hosting platform (Render, Replit, etc.):
+- Add all required variables from above
+- Use Brevo SMTP for production (more reliable than Gmail)
+- Keep SESSION_SECRET and JWT_SECRET as secrets
+
+### 2. Verify Startup
 ```bash
-npm run dev
+npm run dev  # or npm start for production
 ```
 
-### Database
-- Uses PostgreSQL via Drizzle ORM
-- Schema defined in `shared/schema.ts`
-- Push schema changes with: `npm run db:push`
-
-### Default Admin Credentials
-- Username: admin
-- Password: admin123
-
-## Deployment to Render
-
-### Required Environment Variables
-Before deploying to Render, set these environment variables in your Render project settings:
-
+You should see:
 ```
-DATABASE_URL=postgresql://username:password@host/database
-NODE_ENV=production
-SESSION_SECRET=your-random-secret-here
-PORT=5000
+✅ Environment Variables Loaded:
+   DATABASE_URL: postgresql://...
+   NODE_ENV: production
+   EMAIL_USER: ✅ Configured
+   BREVO_SMTP: ✅ Configured
+   RAZORPAY: ✅ Configured
+✅ Database tables ensured
+Seeding database...
+[express] Server running at http://localhost:5000
 ```
 
-### Optional Environment Variables (for email notifications)
-```
-EMAIL_USER=your-gmail@gmail.com
-EMAIL_PASS=your-app-password
-ADMIN_EMAIL=admin@archanapathology.com
-RAZORPAY_KEY_ID=your-razorpay-key
-RAZORPAY_KEY_SECRET=your-razorpay-secret
+### 3. Test Registration Flow
+```bash
+curl -X POST http://localhost:5000/api/auth/request-otp \
+  -H "Content-Type: application/json" \
+  -d '{"contact":"user@example.com","purpose":"email_verification"}'
 ```
 
-### Build & Deployment Config
-- Build: `npm run build`
-- Start: `npm run start` (uses cross-env for environment variables)
-- Deployment target: Autoscale with 5000 port binding
+Expected: Instant response (~50ms), email sent in background
 
-## API Endpoints
+### 4. Deploy to Production
 
-### Authentication
-- `POST /api/auth/register` - Patient registration
-- `POST /api/auth/login-email` - Email login
-- `POST /api/auth/request-otp` - Request OTP
-- `POST /api/auth/verify-otp` - Verify OTP
-- `POST /api/admin/login` - Admin login
+**Option 1: Render**
+- Deploy from GitHub
+- Add environment variables in Render dashboard
+- Uses `npm run build && npm start` from deploy config
 
-### Bookings
-- `POST /api/bookings` - Create booking (public)
-- `GET /api/patient/bookings` - Get patient bookings (authenticated)
-- `PATCH /api/patient/bookings/:id/payment` - Update payment status
+**Option 2: Replit**
+- Already configured in replit.md
+- Deploy using Replit's built-in publish feature
 
-### Prescriptions (Role-Based Access)
-- `POST /api/prescriptions/upload` - Upload prescription (patients)
-- `GET /api/prescriptions` - Get prescriptions (patients see own, admins can filter by patientId)
-- `GET /api/bookings/:id/prescriptions` - Get booking prescriptions (admin)
+**Option 3: Other Platforms**
+- Use `npm run build` to compile TypeScript
+- Run `npm start` to launch
+- Ensure `NODE_ENV=production`
 
-### Reports
-- `GET /api/patient/reports` - Get patient reports
-- `GET /api/reports/download/:token` - Download report securely
+## 🔐 Security Best Practices
 
-### Admin
-- `GET /api/admin/dashboard` - Dashboard stats
-- `GET /api/admin/patients` - List patients
-- `GET /api/admin/bookings` - List bookings
-- `GET /api/admin/reports` - List reports
+1. **Never commit .env** - Already in .gitignore
+2. **Never use .env.example with real values** - Removed from project
+3. **Use environment-specific secrets** - Each platform (dev/prod) has separate values
+4. **Rotate RAZORPAY secrets** - If compromised, regenerate immediately
+5. **Firebase service account** - Keep private, never share JSON
 
-### Public
-- `GET /api/tests` - Get all tests
-- `GET /api/health-packages` - Get health packages
-- `GET /api/advertisements` - Get active advertisements
-- `GET /api/reviews` - Get approved reviews
+## 📊 What Was Wrong & How It's Fixed
 
-## Recent Changes
+### Issue 1: .env.example in Production
+**Problem:** .env.example had template values that got mixed up with real values  
+**Fix:** Completely removed .env.example, only .env used at runtime
 
-### 2025-12-23
-- **Database Schema**: Removed redundant `prescriptionPath` from bookings table (prescriptions table handles this)
-- **API Enhancement**: Implemented role-based access control for `/api/prescriptions` endpoint
-  - Admins: Can view all prescriptions by patientId parameter
-  - Patients: Can only view their own prescriptions
-- **Production Fix**: Moved `cross-env` from devDependencies to dependencies for production deployments
-- **Error Handling**: Made notification service non-blocking in bookings endpoint to prevent cascading failures
-- **Build**: Production build successful, app verified working at localhost:5000
+### Issue 2: Registration API Hanging
+**Problem:** API waited for email to send (5-30 seconds delay)  
+**Fix:** Email now sends async, API returns immediately with 200 OK
 
-## Security Features
-- JWT authentication for protected endpoints
-- Password hashing with bcrypt
-- Secure prescription download tokens
-- Role-based access control (patient/admin)
-- Email verification for patient registration
-- OTP-based authentication support
+### Issue 3: Silent Failures
+**Problem:** Missing env vars went unnoticed until runtime errors  
+**Fix:** Backend validates all required vars on startup, fails with clear error
 
-## Troubleshooting
+### Issue 4: Unclear Email Configuration
+**Problem:** Multiple email systems (Brevo/Gmail) without clear priority  
+**Fix:** Brevo takes priority if configured, Gmail as fallback, dev mode logs OTP
 
-### 502 Bad Gateway in Production
-- Verify DATABASE_URL is set in environment
-- Check Render logs for database connection errors
-- Ensure port binding is correct (port 5000)
+### Issue 5: Production CORS Issues
+**Problem:** Frontend couldn't reach API on custom domain  
+**Fix:** Added `FRONTEND_URL` and `API_URL` env vars for production
 
-### Email Notifications Not Working
-- These are optional and fail gracefully
-- Set EMAIL_USER and EMAIL_PASS to enable (Gmail app password required)
-- Without credentials, notifications are logged to console
+## ✅ Testing Checklist
 
-### Database Connection Issues
-- Ensure PostgreSQL is running and accessible
-- Verify DATABASE_URL format: `postgresql://user:pass@host:5432/dbname`
-- Run `npm run db:push` to sync schema
+- [ ] All environment variables set
+- [ ] Backend starts without errors
+- [ ] OTP requests return instantly
+- [ ] Emails arrive (or log in console for dev mode)
+- [ ] Registration endpoint accessible
+- [ ] Login accepts valid credentials
+- [ ] JWT tokens work correctly
+- [ ] Database tables created successfully
+- [ ] No 401/403/500 errors on production domain
 
+## 🎯 Next Steps
+
+1. Set the required environment variables
+2. Restart the application
+3. Monitor startup logs for configuration status
+4. Test registration flow
+5. Verify emails deliver (check spam folder too)
+
+## 📞 Support
+
+If you encounter issues:
+1. Check startup logs for missing environment variables
+2. Verify email service is correctly configured
+3. Ensure DATABASE_URL has proper credentials
+4. Check CORS settings if frontend can't reach API

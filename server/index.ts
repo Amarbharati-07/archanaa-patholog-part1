@@ -5,7 +5,29 @@ import { createServer } from "http";
 import { seedDatabase } from "./seed";
 import dotenv from "dotenv";
 
-dotenv.config(); // ✅ VERY IMPORTANT
+dotenv.config();
+
+// ✅ ENVIRONMENT VALIDATION - FAIL FAST
+const requiredEnvVars = [
+  "DATABASE_URL",
+  "SESSION_SECRET",
+  "JWT_SECRET",
+];
+
+const missingVars = requiredEnvVars.filter(v => !process.env[v]);
+if (missingVars.length > 0) {
+  console.error("❌ FATAL: Missing required environment variables:", missingVars.join(", "));
+  process.exit(1);
+}
+
+// ✅ LOG LOADED ENVIRONMENT VARIABLES
+console.log("✅ Environment Variables Loaded:");
+console.log(`   DATABASE_URL: ${process.env.DATABASE_URL?.substring(0, 50)}...`);
+console.log(`   NODE_ENV: ${process.env.NODE_ENV || "development"}`);
+console.log(`   PORT: ${process.env.PORT || "5000"}`);
+console.log(`   EMAIL_USER: ${process.env.EMAIL_USER ? "✅ Configured" : "⚠️ Not configured (dev mode)"}`);
+console.log(`   BREVO_SMTP: ${process.env.BREVO_SMTP_HOST ? "✅ Configured" : "⚠️ Not configured"}`);
+console.log(`   RAZORPAY: ${process.env.RAZORPAY_KEY_ID ? "✅ Configured" : "⚠️ Not configured (payments disabled)"}`);
 
 const app = express();
 const httpServer = createServer(app);

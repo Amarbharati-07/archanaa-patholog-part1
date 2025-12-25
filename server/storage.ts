@@ -183,8 +183,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createPatient(patient: InsertPatient): Promise<Patient> {
-    const [created] = await db.insert(patients).values(patient).returning();
-    return created;
+    try {
+      const [created] = await db.insert(patients).values(patient).returning();
+      return created;
+    } catch (error: any) {
+      console.error("Database error in createPatient:", error);
+      // If it's a date error, try to sanitize and retry without DOB
+      if (error.code === '22009' || error.message.includes('time zone displacement')) {
+        const { dob, ...rest } = patient;
+        console.warn("Retrying patient creation without problematic DOB");
+        const [created] = await db.insert(patients).values(rest as any).returning();
+        return created;
+      }
+      throw error;
+    }
   }
 
   async updatePatient(id: string, patient: Partial<InsertPatient>): Promise<Patient | undefined> {

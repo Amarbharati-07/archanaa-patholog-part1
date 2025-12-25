@@ -439,13 +439,25 @@ export async function registerRoutes(
 
       const patientId = await storage.generatePatientId();
       
+      let parsedDob = null;
+      if (dob) {
+        try {
+          parsedDob = new Date(dob);
+          if (isNaN(parsedDob.getTime())) {
+            parsedDob = null;
+          }
+        } catch (e) {
+          parsedDob = null;
+        }
+      }
+      
       const patient = await storage.createPatient({
         patientId,
         name,
         phone,
         email,
         gender: gender || null,
-        dob: dob ? new Date(dob) : null,
+        dob: parsedDob,
         address: null,
         password: hashedPassword,
         emailVerified: false,

@@ -627,6 +627,7 @@ export async function registerRoutes(
       // Wrong password
       const valid = await bcrypt.compare(password, patient.password);
       if (!valid) {
+        console.log(`[AUTH] Login failed: Incorrect password for ${email}`);
         return res.status(401).json({ 
           message: "Incorrect password. Please try again.",
           errorCode: "WRONG_PASSWORD"

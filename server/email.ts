@@ -136,16 +136,19 @@ export async function sendOtpEmail(to: string, otp: string, purpose: string): Pr
   setImmediate(async () => {
     try {
       // Check if email credentials are configured
-      if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      const brevoConfigured = process.env.BREVO_SMTP_HOST && process.env.BREVO_SMTP_USER && process.env.BREVO_SMTP_PASS;
+      const gmailConfigured = process.env.EMAIL_USER && process.env.EMAIL_PASS;
+
+      if (!brevoConfigured && !gmailConfigured) {
         console.log(`⚠️ [DEV MODE] Email not configured. OTP for ${to}: ${otp}`);
         return;
       }
 
-      console.log(`📧 [SENDOTP] Credentials found. Sending via ${process.env.BREVO_SMTP_HOST ? 'Brevo' : 'Gmail'}`);
+      console.log(`📧 [SENDOTP] Credentials found. Sending via ${brevoConfigured ? 'Brevo' : 'Gmail'}`);
       
       // 30-second timeout for email sending
       const emailPromise = transporter.sendMail({
-        from: `"Archana Pathology Lab" <${process.env.EMAIL_USER}>`,
+        from: `"Archana Pathology Lab" <${process.env.BREVO_SMTP_USER || process.env.EMAIL_USER}>`,
         to,
         subject,
         html,

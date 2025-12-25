@@ -1,0 +1,98 @@
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2Understand this warning
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar35%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/register-email:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/register-email:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/vite-hmr:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/vite-hmr:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+29e28bf5e9001c89e.js:2 Measure loop restarted more than 5 times
+(anonymous) @ 9e28bf5e9001c89e.js:2Understand this warning
+t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/&size=32:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/resend-verification:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/resend-verification:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/vite-hmr:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/vite-hmr:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/vite-hmr:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/vite-hmr:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+(index):1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+(index):1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+(index):1 [Intervention] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSD6llDB6g4tIOm6_De.woff2
+(index):1 [Intervention] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSD6llDB6g4tIOm6_De.woff2
+register:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+register:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev:3000/:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)Understand this error
+ Service Worker registered: https://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/
+injected.js:37 Service Worker registered: https://d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/register-email:1  Failed to load resource: the server responded with a status of 400 (Bad Request)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/register-email:1  Failed to load resource: the server responded with a status of 400 (Bad Request)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/register-email:1  Failed to load resource: the server responded with a status of 400 (Bad Request)Understand this error
+d0c0a915-2d6e-4714-bb5c-695c479b272c-00-2ehhkjhr6qgq3.kirk.replit.dev/api/auth/register-email:1  Failed to load resource: the server responded with a status of 400 (Bad Request)Understand this error
+9e28bf5e9001c89e.js:2 task queue exceeded allotted deadline by 25ms

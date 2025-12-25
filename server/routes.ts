@@ -425,13 +425,15 @@ export async function registerRoutes(
       // Check if email already exists
       const existingEmail = await storage.getPatientByEmail(email);
       if (existingEmail) {
-        return res.status(400).json({ message: "Email already registered" });
+        console.log(`[AUTH] Registration failed: Email ${email} already exists`);
+        return res.status(400).json({ message: "This email is already registered. Please try logging in or use a different email." });
       }
 
       // Check if phone already exists
       const existingPhone = await storage.getPatientByPhone(phone);
       if (existingPhone) {
-        return res.status(400).json({ message: "Phone number already registered" });
+        console.log(`[AUTH] Registration failed: Phone ${phone} already exists`);
+        return res.status(400).json({ message: "This phone number is already registered. Please use a different number." });
       }
 
       // Hash password

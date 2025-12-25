@@ -147,7 +147,7 @@ export async function sendOtpEmail(to: string, otp: string, purpose: string): Pr
       console.log(`📧 [SENDOTP] Credentials found. Sending via ${brevoConfigured ? 'Brevo' : 'Gmail'}`);
       
       const sender = process.env.BREVO_SMTP_USER || process.env.EMAIL_USER;
-      console.log(`📧 [SENDOTP] Using sender: ${sender}`);
+      console.log(`📧 [SENDOTP] Attempting to send from: ${sender} to: ${to}`);
 
       // 30-second timeout for email sending
       const emailPromise = transporter.sendMail({

@@ -101,6 +101,7 @@ export const otps = pgTable("otps", {
   otp: varchar("otp", { length: 6 }).notNull(),
   purpose: varchar("purpose", { length: 30 }).notNull(),
   attempts: integer("attempts").notNull().default(0),
+  metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   expiresAt: timestamp("expires_at").notNull(),
 });

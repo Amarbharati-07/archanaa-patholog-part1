@@ -452,19 +452,18 @@ export async function registerRoutes(
           parsedDob = null;
         }
       }
-      
-      const patient = await storage.createPatient({
-        patientId,
+
+      // 📝 Store registration data in JSON metadata of the OTP record
+      // Instead of creating the patient immediately
+      const registrationData = {
         name,
-        phone,
         email,
+        phone,
+        password: hashedPassword,
         gender: gender || null,
         dob: parsedDob,
-        address: null,
-        password: hashedPassword,
-        emailVerified: false,
-        notes: null,
-      });
+        patientId
+      };
 
       // Generate and send email verification OTP
       const otp = generateOTP();
@@ -473,20 +472,18 @@ export async function registerRoutes(
         otp,
         purpose: "email_verification",
         expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+        metadata: registrationData // Store the data for Step 2
       });
 
-      // Send email asynchronously (fire and forget - truly non-blocking)
+      // Send email asynchronously
       setImmediate(() => {
         sendOtpEmail(email, otp, "email_verification").catch((err) => {
           console.error("[ASYNC] Failed to send verification email:", err);
         });
       });
       
-      // Don't return password in response
-      const { password: _, ...patientData } = patient as any;
       res.json({ 
-        message: "Registration successful. Please verify your email.", 
-        patient: patientData,
+        message: "Registration data saved. Please verify your email to complete registration.", 
         requiresVerification: true 
       });
     } catch (error) {
@@ -568,23 +565,35 @@ export async function registerRoutes(
         });
       }
 
-      // Delete OTP
-      await storage.deleteOtp(otpRecord.id);
-
-      // Get patient and update emailVerified
-      const patient = await storage.getPatientByEmail(email);
-      if (!patient) {
-        return res.status(404).json({ message: "Patient not found" });
+      // ✅ Step 2: Extract registration data from metadata and create the patient record
+      const regData = otpRecord.metadata as any;
+      if (!regData || !regData.password) {
+        return res.status(400).json({ message: "Registration session expired. Please start over." });
       }
 
-      await storage.updatePatientEmailVerified(patient.id, true);
+      // Final Patient Creation
+      const patient = await storage.createPatient({
+        patientId: regData.patientId,
+        name: regData.name,
+        phone: regData.phone,
+        email: regData.email,
+        gender: regData.gender,
+        dob: regData.dob ? new Date(regData.dob) : null,
+        address: null,
+        password: regData.password,
+        emailVerified: true,
+        notes: null,
+      });
+
+      // Delete OTP after success
+      await storage.deleteOtp(otpRecord.id);
 
       // Generate token and return patient data
       const token = jwt.sign({ id: patient.id, type: 'patient' }, JWT_SECRET, { expiresIn: '7d' });
       
       const { password: _, ...patientData } = patient as any;
       res.json({ 
-        message: "Email verified successfully",
+        message: "Email verified and registration complete!",
         patient: { ...patientData, emailVerified: true }, 
         token 
       });

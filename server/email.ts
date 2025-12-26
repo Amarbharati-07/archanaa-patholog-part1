@@ -8,11 +8,14 @@ const getTransporter = () => {
     return nodemailer.createTransport({
       host: process.env.BREVO_SMTP_HOST,
       port: parseInt(process.env.BREVO_SMTP_PORT || "587"),
-      secure: process.env.BREVO_SMTP_SECURE === "true", // true for 465, false for other ports
+      secure: false, // Must be false for port 587
       auth: {
         user: process.env.BREVO_SMTP_USER,
         pass: process.env.BREVO_SMTP_PASS,
       },
+      tls: {
+        rejectUnauthorized: false // Helps with handshake issues
+      }
     });
   }
 

@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 
+// SMTP configuration
 const BREVO_SMTP_HOST = process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com";
 const BREVO_SMTP_PORT = parseInt(process.env.BREVO_SMTP_PORT || "587");
 const BREVO_SMTP_USER = process.env.BREVO_SMTP_USER;
@@ -9,13 +10,10 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "archanapathologylaboratory@gmail
 const transporter = nodemailer.createTransport({
   host: BREVO_SMTP_HOST,
   port: BREVO_SMTP_PORT,
-  secure: false,
+  secure: false, // Brevo uses STARTTLS on 587
   auth: {
     user: BREVO_SMTP_USER,
     pass: BREVO_SMTP_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false
   }
 });
 
@@ -68,7 +66,7 @@ export async function sendOtpEmail(to: string, otp: string, purpose: string): Pr
       subject,
       html,
     });
-    console.log(`✅ [SMTP] Email sent to ${to}. Response: ${info.response}`);
+    console.log(`✅ [SMTP] Email sent to ${to}. MessageId: ${info.messageId}`);
     return true;
   } catch (error: any) {
     console.error(`❌ [SMTP] Failed to send email to ${to}:`, {

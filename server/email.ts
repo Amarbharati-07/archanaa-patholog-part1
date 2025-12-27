@@ -1,23 +1,42 @@
 import nodemailer from "nodemailer";
 
-// SMTP configuration
-const BREVO_SMTP_HOST = process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com";
-const BREVO_SMTP_PORT = parseInt(process.env.BREVO_SMTP_PORT || "587");
+// SMTP configuration - Brevo specific
+const BREVO_SMTP_HOST = "smtp-relay.brevo.com";
+const BREVO_SMTP_PORT = 587; // STARTTLS
 const BREVO_SMTP_USER = process.env.BREVO_SMTP_USER;
 const BREVO_SMTP_PASS = process.env.BREVO_SMTP_PASS;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "archanapathologylaboratory@gmail.com";
 
+// Hardcoded sender for better reliability
+const SENDER = `"Archana Pathology Lab" <${ADMIN_EMAIL}>`;
+
 const transporter = nodemailer.createTransport({
   host: BREVO_SMTP_HOST,
   port: BREVO_SMTP_PORT,
-  secure: false, // Brevo uses STARTTLS on 587
+  secure: false, // Must be false for port 587
   auth: {
     user: BREVO_SMTP_USER,
     pass: BREVO_SMTP_PASS,
+  },
+  // Brevo specific requirements
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
-const SENDER = `"Archana Pathology Lab" <${ADMIN_EMAIL}>`;
+// Verify connection configuration on startup
+if (BREVO_SMTP_USER && BREVO_SMTP_PASS) {
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.error("❌ [SMTP] Connection verification failed:", error.message);
+      console.error("DEBUG: USER=" + BREVO_SMTP_USER + " PASS_LENGTH=" + (BREVO_SMTP_PASS ? BREVO_SMTP_PASS.length : 0));
+    } else {
+      console.log("✅ [SMTP] Server is ready to take our messages");
+    }
+  });
+} else {
+  console.warn("⚠️ [SMTP] Brevo credentials missing. Email delivery will be disabled.");
+}
 
 export async function sendOtpEmail(to: string, otp: string, purpose: string): Promise<boolean> {
   const subject = purpose === "email_verification" 

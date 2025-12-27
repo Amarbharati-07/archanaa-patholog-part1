@@ -18,18 +18,21 @@ const transporter = nodemailer.createTransport({
     user: BREVO_SMTP_USER,
     pass: BREVO_SMTP_PASS,
   },
-  // Brevo specific requirements
   tls: {
     rejectUnauthorized: false
   }
 });
 
-// Verify connection configuration on startup
+// Verify connection configuration on startup with safer logging
 if (BREVO_SMTP_USER && BREVO_SMTP_PASS) {
   transporter.verify(function (error, success) {
     if (error) {
       console.error("❌ [SMTP] Connection verification failed:", error.message);
-      console.error("DEBUG: USER=" + BREVO_SMTP_USER + " PASS_LENGTH=" + (BREVO_SMTP_PASS ? BREVO_SMTP_PASS.length : 0));
+      // Masking password for security but showing first/last chars and length
+      const maskedPass = BREVO_SMTP_PASS.length > 4 
+        ? BREVO_SMTP_PASS[0] + "***" + BREVO_SMTP_PASS[BREVO_SMTP_PASS.length-1]
+        : "***";
+      console.error(`DEBUG: USER=${BREVO_SMTP_USER} PASS=${maskedPass} LEN=${BREVO_SMTP_PASS.length}`);
     } else {
       console.log("✅ [SMTP] Server is ready to take our messages");
     }
